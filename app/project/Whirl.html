@@ -1,0 +1,131 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>blender</title>
+<link rel="stylesheet" href="design-system/colors_and_type.css">
+<style>
+  html, body {
+    margin: 0;
+    background: var(--canvas);
+    min-height: 100vh;
+    font-family: var(--font-body);
+    color: var(--ink);
+  }
+  /* Center the phone in the viewport. */
+  .stage {
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    padding: 32px 16px;
+    box-sizing: border-box;
+  }
+  /* Tasteful background — the faint paper grain hinted at in the system. */
+  .stage::before {
+    content: "";
+    position: fixed;
+    inset: 0;
+    background-image: url("design-system/colors_and_type.css"); /* placeholder; we use no image */
+    background-image: none;
+    pointer-events: none;
+    z-index: 0;
+  }
+  /* On taller viewports we float a tiny wordmark in the corner so the page
+     doesn't feel like a single floating phone with nothing around it. */
+  .corner-mark {
+    position: fixed;
+    top: 22px;
+    left: 28px;
+    font-family: var(--font-display);
+    font-weight: 800;
+    font-size: 28px;
+    letter-spacing: -0.04em;
+    display: inline-flex;
+    align-items: center;
+    gap: 2px;
+    color: var(--ink);
+    user-select: none;
+  }
+  .corner-mark .glyph {
+    display: inline-block;
+    width: 0.7em;
+    height: 0.7em;
+    border-radius: 50%;
+    background: var(--squash);
+    border: 3px solid var(--ink);
+    position: relative;
+    vertical-align: -0.05em;
+    box-shadow: 3px 3px 0 var(--ink);
+    animation: whirl-spin 4s linear infinite;
+  }
+  .corner-mark .glyph::after {
+    content: "";
+    position: absolute;
+    inset: 5px;
+    border-radius: 50%;
+    border: 3px solid var(--ink);
+    border-top-color: transparent;
+    border-right-color: transparent;
+  }
+  .corner-mark .glyph-wrap {
+    display: inline-block;
+    width: 0.55em;
+    height: 0.55em;
+    position: relative;
+  }
+  .footer-note {
+    position: fixed;
+    bottom: 18px;
+    left: 50%;
+    transform: translateX(-50%);
+    font-family: var(--font-body);
+    font-size: 11px;
+    color: var(--ink-3);
+    letter-spacing: 0.04em;
+    pointer-events: none;
+  }
+  @media (max-height: 720px) {
+    .corner-mark, .footer-note { display: none; }
+  }
+  @keyframes whirl-spin { to { transform: rotate(360deg); } }
+  @keyframes toast-in {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); }
+    50%      { transform: scale(1.35); }
+  }
+</style>
+</head>
+<body>
+
+<div class="corner-mark" data-comment-anchor="wordmark">
+  <span class="glyph"></span>&nbsp;blender
+</div>
+
+<div class="stage">
+  <div id="root"></div>
+</div>
+
+<div class="footer-note">made at a hackathon. probably fine.</div>
+
+<!-- React + Babel pinned -->
+<script src="https://unpkg.com/react@18.3.1/umd/react.development.js" integrity="sha384-hD6/rw4ppMLGNu3tX5cjIb+uRZ7UkRJ6BPkLpg4hAu/6onKUg4lLsHAs9EBPT82L" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/react-dom@18.3.1/umd/react-dom.development.js" integrity="sha384-u6aeetuaXnQ38mYT8rp6sbXaQe3NL9t+IBXmnYxwkUI2Hw4bsp2Wvmx4yRQF1uAm" crossorigin="anonymous"></script>
+<script src="https://unpkg.com/@babel/standalone@7.29.0/babel.min.js" integrity="sha384-m08KidiNqLdpJqLq95G/LEi8Qvjl/xUYll3QILypMoQ65QorJ9Lvtp2RXYGBFj1y" crossorigin="anonymous"></script>
+
+<script type="text/babel" src="src/Components.jsx"></script>
+<script type="text/babel" src="src/PhoneFrame.jsx"></script>
+<script type="text/babel" src="src/Screens.jsx"></script>
+<script type="text/babel" src="src/tweaks-panel.jsx"></script>
+<script type="text/babel" src="src/App.jsx"></script>
+
+<script type="text/babel" data-presets="env,react">
+  const root = ReactDOM.createRoot(document.getElementById("root"));
+  root.render(<App />);
+</script>
+
+</body>
+</html>
